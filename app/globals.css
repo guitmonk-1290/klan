@@ -13,6 +13,13 @@
     @apply text-heading2-bold text-light-1;
   }
 
+  .profile-image-container {
+    width: 96px;
+    height: 96px;
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
   /* Activity */
   .activity-card {
     @apply flex items-center gap-2 rounded-md bg-dark-2 px-7 py-4;

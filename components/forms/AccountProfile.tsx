@@ -19,6 +19,8 @@ import * as z from "zod"
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import { Textarea } from "../ui/textarea";
+import { isBase64Image } from "@/lib/utils";
+import { useUploadThing } from "@/lib/uploadthing"
 
 interface Props {
     user: {
@@ -35,6 +37,7 @@ interface Props {
 const AccountProfile = ({ user, btnTitle }: Props) => {
 
     const [files, setFiles] = useState<File[]>([]);
+    const { startUpload } = useUploadThing("media");
 
     const form = useForm<z.infer<typeof userValidation>>({
         resolver: zodResolver(userValidation),
@@ -67,8 +70,21 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
         }
     }
 
-    function onSubmit(values: z.infer<typeof userValidation>) {
-        console.log(values);
+    const onSubmit = async (values: z.infer<typeof userValidation>) => {
+        const blob = values.profile_photo;
+
+        const hasImageChanged = isBase64Image(blob);
+
+        if (hasImageChanged) {
+            const imgRes = await startUpload(files);
+
+            if (imgRes && imgRes[0].url) {
+                values.profile_photo = imgRes[0].url;
+            }
+        }
+
+        // update user profile
+        
     }
 
     return (
@@ -80,7 +96,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                 name="profile_photo"
                 render={({ field }) => (
                     <FormItem className="flex justify-center mb-2">
-                        <FormLabel className="">
+                        <FormLabel className="profile-image-container">
                             {
                                 field.value ? (
                                     <Image
@@ -89,7 +105,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                                         width={96}
                                         height={96}
                                         priority
-                                        className="rounded-full object-contain"
+                                        className="rounded-full object-contain cursor-pointer"
                                     />
                                 ) : (
                                     <Image 
@@ -97,7 +113,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                                         alt="profile photo"
                                         width={24}
                                         height={24}
-                                        className="rounded-full object-contain"
+                                        className="rounded-full object-contain cursor-pointer"
                                     />
                                 )
                             }
@@ -124,6 +140,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                                 <Input 
                                     type="text"
                                     className="no-focus"
+                                    {...field}
                                 />
                             </FormControl>
                             <FormDescription />
@@ -141,6 +158,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                                 <Input 
                                     type="text"
                                     className="no-focus"
+                                    {...field}
                                 />
                             </FormControl>
                             <FormDescription>
