@@ -17,6 +17,13 @@ interface Params {
 
 export async function fetchUser(userId: string) {
     // fetch user from database
+    try {
+        connectToDB();
+
+        return await User.findOne({ id: userId })
+    } catch (error: any) {
+        throw new Error("[ERROR] Failed to fetch user: ", error);
+    }
 }
 
 export async function updateUser(
