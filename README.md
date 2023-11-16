@@ -1,4 +1,4 @@
-## Getting Started
+## Klan
 
 First, run the development server:
 
