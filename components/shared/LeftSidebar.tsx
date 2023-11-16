@@ -18,7 +18,7 @@ function LeftSidebar() {
                     const isActive = (pathname.includes(link.route) && link.route.length > 1) || pathname === link.route;
 
                     return (
-                    <div className="text-white cursor-pointer hover:text-violet-400">
+                    <div key={link.label} className="text-white cursor-pointer hover:text-violet-400">
                         <Link 
                             href={link.route}
                             key={link.label}
