@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import User from "../models/user.model";
+import Community from "../models/community.model";
+import Post from "../models/post.model";
 import { connectToDB } from "../mongoose"
 
 interface Params {
@@ -13,7 +15,10 @@ interface Params {
     path: string;
 }
 
-// connect with MongoDB
+export async function fetchUser(userId: string) {
+    // fetch user from database
+}
+
 export async function updateUser(
     {
         userId,
@@ -25,6 +30,7 @@ export async function updateUser(
     } : Params
 ): Promise<void> {
     try {
+        // connect with MongoDB
         connectToDB();
 
         User.findOneAndUpdate(
