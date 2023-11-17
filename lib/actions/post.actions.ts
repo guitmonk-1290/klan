@@ -16,7 +16,45 @@ interface Params {
 }
 
 export async function fetchPosts(page=1, pageSize=20) {
-    
+    try {
+        connectToDB();
+
+        const toSkip = (page - 1) * pageSize;
+
+        const postsQuery = Post.find({ parentId: { $in: [null, undefined] } })
+                               .sort({ createdAt: "desc" })
+                               .skip(toSkip)
+                               .limit(pageSize)
+                               .populate({
+                                path: "author",
+                                model: User,
+                               })
+                               .populate({
+                                path: "community",
+                                model: Community,
+                               })
+                               .populate({
+                                path: "children",
+                                populate: {
+                                    path: "author",
+                                    model: "User",
+                                    select: "_id name parentId image"
+                                }
+                               });
+
+        const totalPosts = await Post.countDocuments({
+            parentId: { $in: [null, undefined] }
+        })
+
+        const posts = await postsQuery.exec();
+
+        const isRem = totalPosts > toSkip + posts.length;
+
+        return { posts, isRem };
+
+    } catch (error: any) {
+        
+    }
 }
 
 export async function createPost({
