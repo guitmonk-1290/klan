@@ -98,6 +98,45 @@ export async function createPost({
     }
 }
 
+export async function addCommentToPost(
+    postId: string,
+    commentText: string,
+    userId: string,
+    path: string
+) {
+    connectToDB();
+
+    try {
+        const parent_post = await Post.findById(postId);
+        
+        if (!parent_post) 
+        {
+            throw new Error("Post not found!");
+        }
+
+        const commentPost = new Post({
+            text: commentText,
+            author: userId,
+            parentId: postId
+        })
+
+        // save the comment to DB
+        const savedCommentPost = await commentPost.save();
+
+        // add comment ID to parent Post's children array
+        parent_post.children.push(savedCommentPost._id);
+
+        // save modified parent post to DB
+        await parent_post.save();
+
+        revalidatePath(path);
+
+    } catch (error: any) {
+        console.error("addCommentToPost(): ", error);
+        throw new Error("addCommentToPost(): ", error.message);
+    }
+}
+
 // recursively gets all the child Posts of a top-level post
 async function fetchChildPosts(postId: string): Promise<any[]> {
     const childPosts = await Post.find({ parentId: postId });
@@ -175,5 +214,42 @@ export async function deletePost(id: string, path: string) {
 
     } catch (error) {
         console.log("deletePost(): ", error);
+    }
+}
+
+export async function fetchPostById(postId: string) {
+    connectToDB();
+
+    try {
+        const post = await Post.findById(postId)
+                               .populate({
+                                path: "author",
+                                model: User,
+                                select: "_id name id image"
+                               })
+                               .populate({
+                                path: "children",
+                                populate: [
+                                    {
+                                        path: "author",
+                                        model: User,
+                                        select: "_id id name image"
+                                    },
+                                    {
+                                        path: "children",
+                                        model: Post,
+                                        populate: {
+                                            path: "author",
+                                            model: User,
+                                            select: "_id id name parentId image"
+                                        }
+                                    }
+                                ]
+                               }).exec();
+        
+        return post;
+
+    } catch (error: any) {
+        throw new Error("[ERROR] fetchPostById(): ", error);
     }
 }

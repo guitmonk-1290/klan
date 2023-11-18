@@ -42,9 +42,8 @@ function PostCard({
 }: Props) {
   return (
     <article
-      className={`flex w-full flex-col rounded-xl ${
-        isComment ? "px-0 xs:px-7" : "bg-dark-2 p-7"
-      }`}
+      className={`flex w-full flex-col rounded-xl ${isComment ? "px-0 xs:px-7" : "bg-dark-2 p-7"
+        }`}
     >
       <div className='flex items-start justify-between'>
         <div className='flex w-full flex-1 flex-row gap-4'>
@@ -62,14 +61,17 @@ function PostCard({
           </div>
 
           <div className='flex w-full flex-col'>
-            <Link href={`/profile/${author.id}`} className='w-fit'>
-              <h4 className='cursor-pointer text-base-semibold text-light-1'>
-                {author.name}
+            <div className="flex flex-row gap-4">
+              <Link href={`/profile/${author.id}`} className='w-fit'>
+                <h4 className='cursor-pointer text-base-semibold text-light-1 hover:text-blue'>
+                  {author.name}
+                </h4>
+              </Link>
+              <h4 className='cursor-pointer w-fit text-[14px] text-gray-400 pb-1'>
+                posted {moment(new Date(createdAt)).fromNow()}
               </h4>
-              <h4 className='cursor-pointer text-base-semibold text-light-1'>
-                {formatDateString(createdAt)}
-              </h4>
-            </Link>
+            </div>
+
 
             <p className='mt-2 text-small-regular text-light-2'>{content}</p>
 
@@ -82,7 +84,7 @@ function PostCard({
                   height={24}
                   className='cursor-pointer object-contain'
                 />
-                <Link href={`/thread/${id}`}>
+                <Link href={`/post/${id}`}>
                   <Image
                     src='/assets/reply.svg'
                     alt='heart'
@@ -108,7 +110,7 @@ function PostCard({
               </div>
 
               {isComment && comments.length > 0 && (
-                <Link href={`/thread/${id}`}>
+                <Link href={`/post/${id}`}>
                   <p className='mt-1 text-subtle-medium text-gray-1'>
                     {comments.length} repl{comments.length > 1 ? "ies" : "y"}
                   </p>
