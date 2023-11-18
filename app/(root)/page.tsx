@@ -1,10 +1,17 @@
 import { UserButton } from "@clerk/nextjs";
- 
-export default function Home() {
+import { fetchPosts } from "@/lib/actions/post.actions";
+import { Suspense } from "react";
+import Loading from "../../components/shared/loading";
+import Posts from "@/components/posts/Posts";
+
+export default async function Home() {
+
   return (
     <div>
       {/* <UserButton afterSignOutUrl="/"/> */}
-      <h1 className="head-text text-left">Home</h1>
+      <Suspense fallback={<Loading />}>
+        <Posts />
+      </Suspense>
     </div>
   )
 }

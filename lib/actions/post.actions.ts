@@ -97,3 +97,83 @@ export async function createPost({
         console.log("[-] Error creating post: ", error);
     }
 }
+
+// recursively gets all the child Posts of a top-level post
+async function fetchChildPosts(postId: string): Promise<any[]> {
+    const childPosts = await Post.find({ parentId: postId });
+
+    const desc_childPosts = [];
+    for(const childPost of childPosts) {
+        const descendants= await fetchChildPosts(childPost._id);
+        desc_childPosts.push(childPost, ...descendants);
+    }
+
+    return desc_childPosts;
+} 
+
+export async function deletePost(id: string, path: string) {
+
+    /**
+     * -> get the main post
+     * -> get the corresponding child posts, or comments
+     * -> get authors and community IDs
+     * -> delete main post
+     * -> delete child posts
+     * -> update User and Community models
+     */
+
+    try {
+        connectToDB();
+
+        const mainPost = await Post.findById(id).populate("author community");
+        
+        if (!mainPost) {
+            throw new Error("Post not found");
+        }
+
+        // get all the child posts and their descendants respectively
+        const childPosts = await fetchChildPosts(id);
+
+        // extract all the IDs including the main post ID and child post IDs 
+        const childPostsIds = [
+            id,
+            ...childPosts.map((post) => post._id),
+        ];
+
+        // get author IDs and community IDs of both main post and child posts to update their models
+        
+        const uniqueAuthorIds = new Set(
+            [
+                ...childPosts.map((post) => post.author?._id?.toString()),
+                mainPost.author?._id?.toString(),
+            ].filter((id) => id !== undefined)
+        );
+
+        const uniqueCommunityIds = new Set(
+            [
+                ...childPosts.map((post) => post.community?._id?.toString()),
+                mainPost.community?._id?.toString(),
+            ].filter((community) => community !== undefined)
+        );
+
+        // delete child posts and their childs recursively
+        await Post.deleteMany({ _id: { $in: childPostsIds } })
+
+        // update User model
+        await User.updateMany(
+            { _id: { $in: Array.from(uniqueAuthorIds) } },
+            { $pull : { posts: { $in: childPostsIds } } }
+        )
+
+        // update Community model
+        await Community.updateMany(
+            { _id: { $in: Array.from(uniqueCommunityIds) } },
+            { $pull: { posts: { $in: childPostsIds } } }
+        )
+
+        revalidatePath(path);
+
+    } catch (error) {
+        console.log("deletePost(): ", error);
+    }
+}
