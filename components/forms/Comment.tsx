@@ -60,13 +60,13 @@ function Comment({
                     name='post'
                     render={({ field }) => (
                         <FormItem className="flex w-full items-center gap-3">
-                            <FormLabel>
+                            <FormLabel className="profile-image-container w-[48px] h-[44px]">
                                 <Image
                                     src={currentUserImg}
                                     alt='current_user'
                                     width={48}
                                     height={48}
-                                    className="rounded-full object-cover"
+                                    className="rounded-full"
                                 />
                             </FormLabel>
                             <FormControl className="border-none bg-transparent">
