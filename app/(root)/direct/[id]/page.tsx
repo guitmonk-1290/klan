@@ -1,10 +1,13 @@
 import { fetchUser } from "@/lib/actions/user.actions";
 import Image from "next/image";
+import { currentUser } from "@clerk/nextjs";
 
-async function Page({params}: {params: { id: string, chatId: string }}) {
+async function Page({params}: {params: { chatId: string }}) {
 
-    if (!params.id || !params.chatId) return null;
-    const u_user = await fetchUser(params.id);
+    if (!params.chatId) return null;
+    const user = await currentUser();
+    if (!user) return null;
+    const u_user = await fetchUser(user.id);
     const o_user = await fetchUser(params.chatId);
 
     return (

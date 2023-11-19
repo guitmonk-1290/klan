@@ -57,7 +57,7 @@ function ProfileHeader({
                 )}
                 {accountId !== authUserId && type !== "Community" && (
                     <div className="flex flex-col gap-4">
-                        <Link href={`/profile/${authUserId}/chat/${accountId}`}>
+                        <Link href={`/direct/${accountId}`}>
                             <div className='flex cursor-pointer gap-3 rounded-lg bg-dark-3 px-4 py-2'>
                                 <Image
                                     src='/assets/request.svg'
