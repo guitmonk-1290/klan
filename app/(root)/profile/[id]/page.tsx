@@ -18,6 +18,8 @@ async function Page({ params }: { params: { id: string } }) {
         if (!userInfo.onboarded) redirect("/onboarding");
     }
 
+    const isConnect = userInfo.connects.includes(user.id);
+
     return (
         <section>
             <ProfileHeader
@@ -27,6 +29,7 @@ async function Page({ params }: { params: { id: string } }) {
                 username={userInfo.username}
                 imgUrl={userInfo.image}
                 bio={userInfo.bio}
+                isConnect={isConnect}
             />
         </section>   
     )

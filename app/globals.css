@@ -5,7 +5,7 @@
 @layer components {
   /* main */
   .main-container {
-    @apply flex min-h-screen flex-1 flex-col items-center bg-black px-6 pb-10 pt-28 max-md:pb-32 sm:px-10;
+    @apply flex min-h-screen flex-1 flex-col items-center bg-black px-0 pb-10 pt-28 max-md:pb-32 sm:px-10;
   }
 
   /* Head Text */
@@ -83,6 +83,10 @@
 
   .leftsidebar {
     @apply sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r border-r-dark-4 bg-dark-2 pb-5 pt-28 max-md:hidden;
+  }
+
+  .leftchatbar {
+    @apply sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r border-r-dark-4 bg-dark-3 pb-5 pt-2 max-md:hidden;
   }
 
   .leftsidebar_link {
@@ -163,6 +167,14 @@
   @apply mt-10 flex items-center gap-4 border-y border-y-dark-4 py-5 max-xs:flex-col !important;
 }
 
+.connect-form {
+  @apply mt-4 flex items-center gap-4 border-y border-y-dark-4 py-2 max-xs:flex-col !important;
+}
+
 .comment-form_btn {
   @apply rounded-3xl bg-primary-500 px-8 py-2 !text-small-regular text-light-1 max-xs:w-full !important;
+}
+
+.connection-btn {
+  @apply p-1 border-2 border-gray-800 bg-dark-3 rounded-xl cursor-pointer hover:bg-dark-4
 }

@@ -114,7 +114,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                 name="profile_photo"
                 render={({ field }) => (
                     <FormItem className="flex justify-center mb-2">
-                        <FormLabel className="profile-image-container">
+                        <FormLabel className="profile-image-container border-2 border-red-200">
                             {
                                 field.value ? (
                                     <Image
@@ -123,7 +123,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                                         width={96}
                                         height={96}
                                         priority
-                                        className="rounded-full object-contain cursor-pointer"
+                                        className="rounded-full w-full h-full object-cover cursor-pointer"
                                     />
                                 ) : (
                                     <Image 
