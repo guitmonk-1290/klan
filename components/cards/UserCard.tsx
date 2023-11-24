@@ -25,12 +25,12 @@ const UserCard = ({
     return (
         <article className="user-card">
             <div className="user-card_avatar">
-                <div className="profile-image-container w-[28] h-[28]">
+                <div className="profile-image-container w-[32px] h-[32px]">
                     <Image 
                         src={image}
                         alt='logo'
-                        width={28}
-                        height={28}
+                        width={32}
+                        height={32}
                         className="rounded-full object-cover w-full h-full"
                     />
                 </div>
