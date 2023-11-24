@@ -60,8 +60,8 @@ function PostCard({
             <div className='thread-card_bar' />
           </div>
 
-          <div className='flex w-full flex-col'>
-            <div className="flex flex-row gap-4">
+          <div className='flex w-full flex-col '>
+            <div className="flex flex-row gap-2 flex-wrap">
               <Link href={`/profile/${author.id}`} className='w-fit'>
                 <h4 className='cursor-pointer text-base-semibold text-light-1 hover:text-blue'>
                   {author.name}

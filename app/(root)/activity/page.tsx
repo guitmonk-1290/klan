@@ -56,7 +56,7 @@ async function Page() {
                     <>
                         <div className={`w-full bg-dark-4 light-text-1 flex flex-col gap-4 p-4 rounded-md`}>
                             <div className="flex flex-row gap-4">
-                                <div className="profile-image-container w-[34px] h-[34px]">
+                                <div className="profile-image-container w-[34px] flex-shrink-0 h-[34px] border-2 border-red-200">
                                     <Image
                                         src={con.image}
                                         alt={con.name}
@@ -65,15 +65,17 @@ async function Page() {
                                         className="rounded-full w-full h-full object-cover border-2 border-violet-800"
                                     />
                                 </div>
-                                <span className="text-light-1 mt-1">You have a connection request from
-                                    <Link href={`/profile/${con.from}`}>
-                                        <span className="text-base-semibold hover:text-blue"> {con.name}</span>
-                                    </Link>
-                                </span>
-                                <ConnectionButtons 
-                                    userId={user.id}
-                                    conId={con.from}
-                                />
+                                <div className="flex flex-row flex-wrap gap-2">
+                                    <span className="text-light-1 mt-1">Connection request from
+                                        <Link href={`/profile/${con.from}`}>
+                                            <span className="text-base-semibold hover:text-blue"> {con.name}</span>
+                                        </Link>
+                                    </span>
+                                    <ConnectionButtons 
+                                        userId={user.id}
+                                        conId={con.from}
+                                    />
+                                </div>
                             </div>
                             <div className="rounded-lg p-4 bg-gray-800 text-gray-400">
                                 {con.text}

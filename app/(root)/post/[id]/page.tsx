@@ -20,7 +20,7 @@ async function page({ params }: { params: { id: string } }) {
     const post = await fetchPostById(params.id);
 
     return (
-        <section className="relative">
+        <section className="relative ml-2 mr-2">
             <div>
                 <PostCard
                     id={post._id}
