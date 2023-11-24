@@ -1,6 +1,5 @@
 import LeftChatbar from "@/components/shared/LeftChatbar";
 import RootLayout from "../layout";
-import ChatRoom from "@/components/shared/ChatRoom";
 
 export default function ChatLayout({
     children
