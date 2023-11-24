@@ -20,6 +20,7 @@ async function Page() {
     // get activity
     const activity = await getActivity(userInfo._id);
 
+
     const status = {
         "accept": {
             label: "accepted",
@@ -84,7 +85,7 @@ async function Page() {
             {
                 userInfo.outcon.map((con : out_conParams) => (
                     <>
-                        <div className={`${status[con.status].border} border-[1px] w-full bg-dark-4 light-text-1 flex flex-col gap-4 p-2 rounded-md`}>
+                        <div className={`border-[1px] w-full bg-dark-4 light-text-1 flex flex-col gap-4 p-2 rounded-md`}>
                             <div className="flex flex-row gap-4">
                                 <div className="profile-image-container w-[34px] h-[34px]">
                                     <Image
@@ -102,7 +103,21 @@ async function Page() {
                                 </span>
                                 <div className="ml-auto mr-2 bg-dark-4 border-2 border-gray-800 p-1 text-light-1">
                                     Status: 
-                                    <span className={`${status[con.status].color} mt-1`}> {status[con.status].label}</span>
+                                    {
+                                        con.status==="accept" ? (
+                                            <span className={`text-green-400 mt-1`}>accepted</span>
+                                        ) : (
+                                            <>
+                                            {
+                                                con.status==="reject" ? (
+                                                    <span className={`text-red-400 mt-1`}>rejected</span>
+                                                ) : (
+                                                    <span className={`text-gray-800 mt-1`}>pending</span>
+                                                )
+                                            }
+                                            </>
+                                        )
+                                    }
                                 </div>
                             </div>
                         </div>
