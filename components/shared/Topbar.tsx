@@ -17,7 +17,7 @@ function Topbar() {
                 <div className="block ">
                     <SignedOut>
                         <SignInButton>
-                            <div className="flex cursor-pointer text-white text-xl hover:bg-violet-300 hover:text-black transition duration 150 p-2 rounded-md">
+                            <div className="flex cursor-pointer text-white text-xl bg-violet-600 transition duration 150 p-2 rounded-md">
                                 Sign in
                             </div>
                         </SignInButton>
