@@ -88,8 +88,8 @@ async function Page() {
                 userInfo.outcon.map((con : out_conParams) => (
                     <>
                         <div className={`border-[1px] w-full bg-dark-4 light-text-1 flex flex-col gap-4 p-2 rounded-md`}>
-                            <div className="flex flex-row gap-4">
-                                <div className="profile-image-container w-[34px] h-[34px]">
+                            <div className="flex flex-row gap-4 flex-wrap">
+                                <div className="profile-image-container flex-shrink-0 mt-auto  w-[34px] h-[34px]">
                                     <Image
                                         src='/assets/request.svg'
                                         alt='connection'
@@ -107,14 +107,14 @@ async function Page() {
                                     Status: 
                                     {
                                         con.status==="accept" ? (
-                                            <span className={`text-green-400 mt-1`}>accepted</span>
+                                            <span className={`text-green-400 mt-1`}> accepted</span>
                                         ) : (
                                             <>
                                             {
                                                 con.status==="reject" ? (
-                                                    <span className={`text-red-400 mt-1`}>rejected</span>
+                                                    <span className={`text-red-400 mt-1`}> rejected</span>
                                                 ) : (
-                                                    <span className={`text-gray-800 mt-1`}>pending</span>
+                                                    <span className={`text-gray-500 mt-1`}> pending</span>
                                                 )
                                             }
                                             </>
