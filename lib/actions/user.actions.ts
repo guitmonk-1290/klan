@@ -4,10 +4,13 @@ import { revalidatePath } from "next/cache";
 import User from "../models/user.model";
 import Community from "../models/community.model";
 import Post from "../models/post.model";
+import {Conversation, GroupMember} from "../models/chat.model"
 import { connectToDB } from "../mongoose"
 import { redirect } from "next/navigation";
 import { string } from "zod";
 import { FilterQuery, SortOrder } from "mongoose";
+import { pusherServer } from "../pusher/pusher";
+import { toPusherKey } from "../utils";
 
 interface Params {
     userId: string;
@@ -115,9 +118,8 @@ export async function fetchUsers({
     }
 }
 
-interface ConnectParams {
-    accountId: string;
-    userId: string;
+interface Connect {
+    id: string;
     name: string;
     username: string;
     image: string;
@@ -179,23 +181,37 @@ export async function requestConnect(
         console.log("OUTGOING REQUEST: ", out_request);
         console.log("INCOMING REQUEST: ", in_request);
 
-        const outDoc = await User.findOneAndUpdate(
-            { id: userId },
-            { $push: {
-                outcon: out_request
-            } },
-            { upsert: true, new: true }
-        )
-        console.log("UPDATED OUT DOC: ", outDoc);
+        const outDocUser = await User.findOne({ id: userId })
+        const isAlreadyPrevConnected = outDocUser.outcon.find((con: any) => con.to === conId);
 
-        const inDoc = await User.findOneAndUpdate(
-            { id: conId },
-            { $push: {
-                incon: in_request
-            } },
-            { upsert: true, new: true }
+        if (!isAlreadyPrevConnected) {
+            const outDoc = await User.findOneAndUpdate(
+                { id: userId },
+                { $push: {
+                    outcon: out_request
+                } },
+                { upsert: true, new: true }
+            )
+            console.log("UPDATED OUT DOC: ", outDoc);
+
+            const inDoc = await User.findOneAndUpdate(
+                { id: conId },
+                { $push: {
+                    incon: in_request
+                } },
+                { upsert: true, new: true }
+            )
+            console.log("UPDATED IN DOC: ", inDoc);
+        }
+
+        console.log("[/] trigger pusher...");
+        pusherServer.trigger(
+            toPusherKey(`user:${conId}:incoming_requests`),
+            'incoming_requests',
+            {
+                senderId: userId
+            }
         )
-        console.log("UPDATED IN DOC: ", inDoc);
 
     } catch (error : any) {
         console.log("[ERROR] requestConnect(): ", error.message);
@@ -227,12 +243,33 @@ export async function rejectConnect(
     }
 }
 
+
 export async function addConnect(
     userId : string,
-    conId : string
+    conId : string,
+    name : string,
+    username : string,
+    image : string
 ) : Promise<void> {
     try {
         connectToDB();
+
+        const user = await fetchUser(userId);
+        const con = await fetchUser(conId);
+
+        const connectObj : Connect = {
+            id: conId,
+            name: name,
+            username: username,
+            image: image
+        }
+
+        const userObj : Connect = {
+            id: userId,
+            name: user.name,
+            username: user.username,
+            image: user.image
+        }
 
         await User.findOneAndUpdate(
             {id: userId},
@@ -250,21 +287,53 @@ export async function addConnect(
         await User.findOneAndUpdate(
             {id: userId},
             { $push: {
-                connects: conId
+                connects: connectObj
             } }
         )
 
         await User.findOneAndUpdate(
             {id: conId},
             { $push: {
-                connects: userId
+                connects: userObj
             } }
+        )
+        
+        const conversation_id = userId>conId ? userId.concat("--", conId) : conId.concat("--", userId);
+
+        const conversation = new Conversation({
+            conversation_id: conversation_id,
+            numberOfMembers: 2,
+        })
+
+        const savedConversation = await conversation.save();
+
+        const groupMember1 = new GroupMember({
+            id: user._id,
+            conversation_id: savedConversation._id,
+        })
+
+        const groupMember2 = new GroupMember({
+            id: con._id,
+            conversation_id: savedConversation._id,
+        })
+
+        const savedMember1 = await groupMember1.save();
+        const savedMember2 = await groupMember2.save();
+
+        console.log("saved-1 : ", savedMember1)
+        console.log("saved-2 : ", savedMember2)
+
+        // check working!
+        await Conversation.findOneAndUpdate(
+            { _id: savedConversation._id },
+            { $push: { members: { $each: [savedMember1._id, savedMember2._id] } } }
         )
 
     } catch (error : any) {
         console.log("[ERROR] addConnect(): ", error.message);
     }
 }
+
 
 export async function getActivity(userId: string) {
     try {

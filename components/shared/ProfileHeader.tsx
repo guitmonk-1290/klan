@@ -17,6 +17,7 @@ interface Props {
     bio: string;
     type?: string;
     isConnect: boolean;
+    requested: boolean
 }
 
 function ProfileHeader({
@@ -27,7 +28,8 @@ function ProfileHeader({
     imgUrl,
     bio,
     type,
-    isConnect
+    isConnect,
+    requested
 }: Props) {
 
     const [connect, setConnect] = useState(false);
@@ -87,18 +89,38 @@ function ProfileHeader({
                                 </>
                             ) : (
                                 <>
-                                    <div 
-                                        className='flex cursor-pointer gap-3 rounded-lg bg-dark-3 px-4 py-2 w-auto'
-                                        onClick={() => setConnect(!connect)}    
-                                    >
-                                        <Image
-                                            src='/assets/request.svg'
-                                            alt='logout'
-                                            width={16}
-                                            height={16}
-                                        />
-                                        <p className='text-light-2 max-sm:hidden'>Connect</p>
-                                    </div>
+                                    {
+                                        requested ? (
+                                            <>
+                                                <div 
+                                                    className='flex cursor-pointer gap-3 rounded-lg bg-dark-3 px-4 py-2 w-auto'    
+                                                >
+                                                    <Image
+                                                        src='/assets/request.svg'
+                                                        alt='logout'
+                                                        width={16}
+                                                        height={16}
+                                                    />
+                                                    <p className='text-light-2 max-sm:hidden'>Requested</p>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div 
+                                                    className='flex cursor-pointer gap-3 rounded-lg bg-dark-3 px-4 py-2 w-auto'
+                                                    onClick={() => setConnect(!connect)}    
+                                                >
+                                                    <Image
+                                                        src='/assets/request.svg'
+                                                        alt='logout'
+                                                        width={16}
+                                                        height={16}
+                                                    />
+                                                    <p className='text-light-2 max-sm:hidden'>Connect</p>
+                                                </div>
+                                            </>
+                                        )
+                                    }
                                 </>
                             )
                         }
@@ -130,6 +152,7 @@ function ProfileHeader({
                             conId={accountId}
                             name={name}
                             username={username}
+                            requested={requested}
                         />
                     </div>
                 )

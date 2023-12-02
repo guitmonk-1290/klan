@@ -5,7 +5,7 @@
 @layer components {
   /* main */
   .main-container {
-    @apply flex min-h-screen flex-1 flex-col items-center bg-black px-4 pb-10 pt-28 max-md:pb-32 sm:px-10;
+    @apply flex min-h-screen flex-1 flex-col items-center bg-black px-2 pb-10 pt-20 max-md:pb-32 sm:px-5;
   }
 
   /* Head Text */
@@ -86,7 +86,7 @@
   }
 
   .leftchatbar {
-    @apply sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r border-r-dark-4 bg-dark-3 pb-5 pt-2 max-md:hidden;
+    @apply sticky left-0 top-0 flex h-[600px] min-w-[244px] flex-col justify-between overflow-auto border-r border-r-dark-4 bg-dark-3 pb-5 pt-2;
   }
 
   .leftsidebar_link {
@@ -177,4 +177,25 @@
 
 .connection-btn {
   @apply p-1 border-2 border-gray-800 bg-dark-3 rounded-xl cursor-pointer hover:bg-dark-4
+}
+
+.scrollbar-w-2::-webkit-scrollbar {
+  width: 0.25rem;
+  height: 0.25rem;
+}
+
+.scrollbar-track-blue-lighter::-webkit-scrollbar-track {
+  --bg-opacity: 1;
+  background-color: #f7fafc;
+  background-color: rgba(247, 250, 252, var(--bg-opacity));
+}
+
+.scrollbar-thumb-blue::-webkit-scrollbar-thumb {
+  --bg-opacity: 1;
+  background-color: #edf2f7;
+  background-color: rgba(237, 242, 247, var(--bg-opacity));
+}
+
+.scrollbar-thumb-rounded::-webkit-scrllbar-thumb {
+  border-radius: 0.25rem;
 }

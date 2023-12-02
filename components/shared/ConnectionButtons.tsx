@@ -6,15 +6,21 @@ import { addConnect } from "@/lib/actions/user.actions";
 interface Params {
     userId: string;
     conId: string;
+    name: string;
+    username: string;
+    image: string;
 }
 
 export default function ConnectionButtons({
     userId,
-    conId
+    conId,
+    name,
+    username,
+    image
 } : Params) {
 
     const acceptConnect = async () => {
-        await addConnect(userId, conId).then(() => location.reload());
+        await addConnect(userId, conId, name, username, image).then(() => location.reload());
 
     }
 

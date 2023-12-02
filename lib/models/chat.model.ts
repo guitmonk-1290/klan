@@ -1,24 +1,81 @@
 import mongoose from "mongoose"
+import { number, string } from "zod"
 
-const chatSchema = new mongoose.Schema({
-    sender_id: {
-        type: String,
-        required: true
+const groupMemberSchema = new mongoose.Schema({
+    id: {
+        type: String
     },
-    recv_id : {
-        type: String,
+    conversation_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Conversation"
+    },
+    joinedAt: {
+        type: Date,
+        default: Date.now
+    },
+    leftAt: {
+        type: Date
+    }
+})
+
+const conversationSchema = new mongoose.Schema({
+    conversation_id: {
+        type: String
+    },
+    conversation_name: {
+        type: String
+    },
+    numberOfMembers: {
+        type: Number,
+        default: 2
+    },
+    members: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "GroupMember"
+        }
+    ],
+    messages: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Message"
+        }
+    ]
+})
+
+const messageSchema = new mongoose.Schema({
+    creatorId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true
     },
     body: {
         type: String,
-        required: false
+        required: true
     },
-    images: {
-        type: Array<String>,
-        default: ['']
+    image: {
+        type: String
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    parent_message_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Message"
+    },
+    conversation_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Conversation"
     }
 })
 
-const Chat = mongoose.models.Chat || mongoose.model("Chat", chatSchema);
+const Message = mongoose.models.Message || mongoose.model("Message", messageSchema);
 
-export default Chat;
+const Conversation = mongoose.models.Conversation || mongoose.model("Conversation", conversationSchema);
+
+const GroupMember = mongoose.models.GroupMember || mongoose.model("GroupMember", groupMemberSchema);
+
+export {
+    Message, Conversation, GroupMember
+}

@@ -24,14 +24,16 @@ interface Props {
     userId: string,
     conId: string,
     name: string,
-    username: string
+    username: string,
+    requested: boolean
 }
 
 function Connect({
     userId,
     conId,
     name,
-    username
+    username,
+    requested
 } : Props) {
     const pathname = usePathname();
     let btn_text = "Connect"
@@ -47,6 +49,7 @@ function Connect({
         await requestConnect(userId, conId, name, username, values.post).then(() => console.log("DB updated!"));
 
         form.reset();
+        requested = true;
     }
 
     return (
@@ -71,7 +74,7 @@ function Connect({
                     )}
                 />
 
-                <Button type="submit" className="comment-form_btn mr-4 mb-2">
+                <Button disabled={requested} type="submit" className="comment-form_btn mr-4 mb-2">
                     {btn_text}
                 </Button>
 

@@ -74,6 +74,9 @@ async function Page() {
                                     <ConnectionButtons 
                                         userId={user.id}
                                         conId={con.from}
+                                        name={con.name}
+                                        username={con.username}
+                                        image={con.image}
                                     />
                                 </div>
                             </div>

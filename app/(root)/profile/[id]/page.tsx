@@ -18,6 +18,8 @@ async function Page({ params }: { params: { id: string } }) {
         if (!userInfo.onboarded) redirect("/onboarding");
     }
 
+    const requested = params.id!==user.id && userInfo.incon.find((con: any) => con.from === user.id);
+
     const isConnect = userInfo.connects.includes(user.id);
 
     return (
@@ -30,6 +32,7 @@ async function Page({ params }: { params: { id: string } }) {
                 imgUrl={userInfo.image}
                 bio={userInfo.bio}
                 isConnect={isConnect}
+                requested={requested}
             />
         </section>   
     )

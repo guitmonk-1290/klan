@@ -27,3 +27,7 @@ export function formatDateString(dateString: string) {
 
   return `${time} - ${formattedDate}`;
 }
+
+export function toPusherKey(key: string) {
+  return key.replace(/:/g, '__')
+}

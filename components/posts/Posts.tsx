@@ -6,8 +6,6 @@ import NoUser from "../shared/NoUser";
 
 const Posts = async () => {
 
-    await new Promise(resolve => setTimeout(resolve, 3000));
-
     const result = await fetchPosts();
     const user = await currentUser();
     if (!user) return (
