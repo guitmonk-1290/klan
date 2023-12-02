@@ -1,4 +1,4 @@
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, currentUser } from "@clerk/nextjs";
 import { fetchPosts } from "@/lib/actions/post.actions";
 import { Suspense } from "react";
 import Loading from "../../components/shared/loading";
@@ -6,8 +6,16 @@ import Posts from "@/components/posts/Posts";
 import Image from "next/image";
 import Link from "next/link";
 import HomeSearch from "@/components/shared/HomeSearch";
+import NoUser from "@/components/shared/NoUser";
 
 export default async function Home() {
+
+  const user = await currentUser();
+    if (!user) return (
+        <>
+            <NoUser />
+        </>
+    );
 
   return (
     <div className="">
@@ -29,7 +37,7 @@ export default async function Home() {
         </div>
       </article>
       <Suspense fallback={<Loading />}>
-        <Posts />
+        <Posts userId={user.id}/>
       </Suspense>
     </div>
   )

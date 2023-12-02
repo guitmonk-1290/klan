@@ -4,15 +4,15 @@ import PostCard from "../cards/PostCard";
 import { notFound } from "next/navigation";
 import NoUser from "../shared/NoUser";
 
-const Posts = async () => {
+interface Params {
+    userId: string
+}
+
+const Posts = async ({
+    userId
+} : Params) => {
 
     const result = await fetchPosts();
-    const user = await currentUser();
-    if (!user) return (
-        <>
-            <NoUser />
-        </>
-    );
 
     return (
         <section className='flex flex-col gap-10'>
@@ -24,7 +24,7 @@ const Posts = async () => {
                         <PostCard
                             key={post._id}
                             id={post._id}
-                            currentUserId={user?.id}
+                            currentUserId={userId}
                             parentId={post.parentId}
                             content={post.text}
                             author={post.author}
