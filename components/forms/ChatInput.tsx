@@ -46,11 +46,9 @@ export default function ChatInput({
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder='Message...'
-                    className="block p-2 w-full resize-none border-0 bg-transparent text-gray-100 placeholder:text-gray-600 focus:ring-0 sm:py-1.5 sm:text-small sm:ring-6"
+                    className="block p-2 w-full resize-none border-0 bg-transparent focus:ring-0 sm:py-1.5 sm:text-small sm:ring-6"
                 />
             </div>
-
-            
         </div>
     )
 }

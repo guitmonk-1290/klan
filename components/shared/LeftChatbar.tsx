@@ -8,7 +8,7 @@ import NoUser from "./NoUser";
 async function LeftChatbar() {
 
     const user = await currentUser();
-    
+
     if (!user) return (
         <>
             <NoUser />
@@ -19,11 +19,11 @@ async function LeftChatbar() {
 
     const headersList = headers();
     const pathname = headersList.get('next-url');
-    console.log("Headers: ", typeof(pathname));
+    console.log("Headers: ", typeof (pathname));
     console.log("isActive: ", pathname?.includes("direct"));
 
     return (
-        <section className={`${pathname?.length!>8 ? 'max-sm:hidden max-md:hidden' : 'leftchatbar max-sm:w-full max-md:w-full'}`}>
+        <section className={`leftchatbar mt-14 h-auto`}>
             <div className="flex w-full flex-1 flex-col gap-0 px-2 mt-2">
                 <div className=" text-gray-400 h-12">Connects</div>
                 {
@@ -36,7 +36,7 @@ async function LeftChatbar() {
                             {
                                 userInfo.connects.map((connect: any) => {
                                     const isActive = (pathname?.includes(connect.id) && connect.id.length > 1) || pathname === connect.id;
-            
+
                                     return (
                                         <>
                                             <div key={connect.username} className="text-white cursor-pointer hover:bg-gray-900 border-b-1  border-gray mt-2">
@@ -59,7 +59,7 @@ async function LeftChatbar() {
                                             </div>
                                         </>
                                     )
-                                })   
+                                })
                             }
                         </>
                     )

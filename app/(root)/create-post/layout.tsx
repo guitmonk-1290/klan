@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import '../globals.css'
+import '../../globals.css'
 import { ClerkProvider, currentUser } from "@clerk/nextjs"
 import Topbar from '@/components/shared/Topbar'
 import BottomBar from '@/components/shared/Bottombar'
@@ -24,18 +24,14 @@ export default async function RootLayout({
   const user = await currentUser();
 
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>
-          <Topbar />
-          <main className='flex flex-row flex-1'>
-            <LeftSidebar userId={user?.id}/>
+    <main className='flex flex-row flex-1'>
+      <section className='main-container'>
+        <div className='w-full max-w-4xl'>
+          {children}
+        </div>
+      </section>
 
-            {children}
-          </main>
-          <BottomBar userId={user?.id} />
-        </body>
-      </html>
-    </ClerkProvider>
+      <RightSidebar />
+    </main>
   )
 }
