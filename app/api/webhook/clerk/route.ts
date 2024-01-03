@@ -49,7 +49,7 @@ export const POST = async (request: Request) => {
       heads as IncomingHttpHeaders & WebhookRequiredHeaders
     ) as Event;
   } catch (err) {
-    return NextResponse.json({ message: err }, { status: 400 });
+    return NextResponse.json({ message: "failed to verify webhook" }, { status: 400 });
   }
 
   const eventType: EventType = evnt?.type!;
