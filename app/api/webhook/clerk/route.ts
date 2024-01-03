@@ -30,13 +30,12 @@ type Event = {
 export const POST = async (request: Request) => {
 
   const payload = await request.json();
-  const header = headers();
-
+  
   const heads = {
-    "svix-id": header.get("svix-id"),
-    "svix-timestamp": header.get("svix-timestamp"),
-    "svix-signature": header.get("svix-signature"),
-  };
+  "svix-id": request.headers.get("svix-id"),
+  "svix-timestamp": request.headers.get("svix-timestamp"),
+  "svix-signature": request.headers.get("svix-signature"),
+};
 
   // Activitate Webhook in the Clerk Dashboard.
   // After adding the endpoint, you'll see the secret on the right side.
