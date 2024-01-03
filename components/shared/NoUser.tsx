@@ -7,7 +7,7 @@ export default function NoUser() {
     const router = useRouter();
 
     return (
-        <section className="main-container flex flex-col gap-4">
+        <section className="main-container flex flex-col gap-4 justify-center">
             <div>
                 <p className="no-result">You need to be signed in to use Klan</p>
             </div>

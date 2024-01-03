@@ -1,4 +1,5 @@
-import { SignInButton, SignedOut, UserButton } from "@clerk/nextjs";
+import { UserButton, OrganizationSwitcher } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import Link from "next/link";
 
 function Topbar() {
@@ -13,15 +14,16 @@ function Topbar() {
                     </p>
             </Link>
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-4">
                 <div className="block ">
-                    <SignedOut>
-                        <SignInButton>
-                            <div className="flex cursor-pointer text-white text-xl bg-violet-600 transition duration 150 p-2 rounded-md">
-                                Sign in
-                            </div>
-                        </SignInButton>
-                    </SignedOut>
+                    <OrganizationSwitcher
+                        appearance={{
+                            baseTheme: dark,
+                            elements: {
+                            organizationSwitcherTrigger: "py-2 px-4",
+                            },
+                        }}
+                    />
                 </div>
                 <div className="">
                     <UserButton />
