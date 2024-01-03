@@ -1,50 +1,40 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const communitySchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true
+  id: {
+    type: String,
+    required: true,
+  },
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  image: String,
+  bio: String,
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  posts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
     },
-    name: {
-        type: String,
-        required: true
+  ],
+  members: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
-    desc: {
-        type: String,
-        required: true
-    },
-    image: {
-        type: String,
-        required: false,
-        default: ""
-    },
-    banner: {
-        type: String,
-        required: false,
-        default: ""
-    },
-    numberOfMembers: {
-        type: mongoose.Schema.Types.Number,
-        default: 1
-    },
-    members: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        }
-    ],
-    createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    },
-    posts: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Post"
-        }
-    ]
-})
+  ],
+});
 
-const Community = mongoose.models.Community || mongoose.model("Community", communitySchema)
+const Community =
+  mongoose.models.Community || mongoose.model("Community", communitySchema);
 
 export default Community;
