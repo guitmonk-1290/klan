@@ -29,6 +29,7 @@ type Event = {
 
 export const POST = async (request: Request) => {
 
+  console.log("triggered POST .............");
   const payload = await request.json();
   
   const heads = {
@@ -60,32 +61,29 @@ export const POST = async (request: Request) => {
     // Show what evnt?.data sends from above resource
 
 
-    return NextResponse.json({ message: "User created" }, { status: 201 });
+    const { id, name, slug, logo_url, image_url, created_by } =
+      evnt?.data ?? {};
 
+    console.log("slug and createdBY: ", slug+"--->"+created_by+"[ID: "+id+"]");
 
-    // const { id, name, slug, logo_url, image_url, created_by } =
-    //   evnt?.data ?? {};
+    try {
+      await createCommunity(
+        id,
+        name,
+        slug,
+        logo_url || image_url,
+        "org bio",
+        created_by
+      );
 
-    // try {
-    //   // @ts-ignore
-    //   await createCommunity(
-    //     // @ts-ignore
-    //     id,
-    //     name,
-    //     slug,
-    //     logo_url || image_url,
-    //     "org bio",
-    //     created_by
-    //   );
-
-    //   return NextResponse.json({ message: "User created" }, { status: 201 });
-    // } catch (err) {
-    //   console.log(err);
-    //   return NextResponse.json(
-    //     { message: "Internal Server Error" },
-    //     { status: 500 }
-    //   );
-    // }
+      return NextResponse.json({ message: "User created" }, { status: 201 });
+    } catch (err) {
+      console.log(err);
+      return NextResponse.json(
+        { message: "Internal Server Error" },
+        { status: 500 }
+      );
+    }
   }
 
   // Listen organization invitation creation event.

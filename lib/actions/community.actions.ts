@@ -9,18 +9,19 @@ import User from "../models/user.model";
 import { connectToDB } from "../mongoose";
 
 export async function createCommunity(
-  id: string,
-  name: string,
-  username: string,
-  image: string,
-  bio: string,
-  createdById: string // Change the parameter name to reflect it's an id
+  id: string | number | Record<string, string>[],
+  name: string | number | Record<string, string>[],
+  username: string | number | Record<string, string>[],
+  image: string | number | Record<string, string>[],
+  bio: string | number | Record<string, string>[],
+  createdById: string | number | Record<string, string>[] // Change the parameter name to reflect it's an id
 ) {
   try {
     connectToDB();
 
     // Find the user with the provided unique id
     const user = await User.findOne({ id: createdById });
+    console.log("community created by: ", user);
 
     if (!user) {
       throw new Error("User not found"); // Handle the case if the user with the id is not found
@@ -35,7 +36,10 @@ export async function createCommunity(
       createdBy: user._id, // Use the mongoose ID of the user
     });
 
+    console.log("newCommunity: ", newCommunity);
+
     const createdCommunity = await newCommunity.save();
+    console.log("createdCommunity: ", createdCommunity);
 
     // Update User model
     user.communities.push(createdCommunity._id);
