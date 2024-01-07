@@ -159,14 +159,14 @@ function PostCard({
         >
           <p className='text-subtle-medium text-gray-1'>
             {formatDateString(createdAt)}
-            {community && ` - ${community.name} Community`}
+            <span className="text-[14px] text-violet-400">{community && ` - ${community.name}`}</span>
           </p>
 
           <Image
             src={community.image}
             alt={community.name}
-            width={14}
-            height={14}
+            width={18}
+            height={18}
             className='ml-1 rounded-full object-cover'
           />
         </Link>
