@@ -163,6 +163,25 @@ export async function fetchCommunities({
   }
 }
 
+export async function fetchTopCommunities(
+  max: number
+) {
+  try {
+    connectToDB();
+
+    const communitiesQuery = Community.find({})
+      .sort({ members: "desc" })
+      .limit(max);
+    
+      const communities = await communitiesQuery.exec();
+
+      return communities;
+
+  } catch (error : any) {
+    console.error("fetchTopCommunities: ", error.message);
+  }
+}
+
 export async function addMemberToCommunity(
   communityId: string,
   memberId: string
