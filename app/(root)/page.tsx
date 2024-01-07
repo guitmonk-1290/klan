@@ -35,7 +35,7 @@ export default async function Home() {
                     src="/assets/reply.svg"
                     width={44}
                     height={44}
-                    className="cursor-pointer ml-4 mt-2"
+                    className="cursor-pointer ml-4 mt-4"
                   />
                 </Link>
               </div>

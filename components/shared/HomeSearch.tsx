@@ -9,7 +9,7 @@ export default function HomeSearch() {
     const [search, setSearch] = useState("");
 
     return (
-        <div className='searchbar flex-1'>
+        <div className='searchbar mt-2 flex-1'>
             <Image
                 src='/assets/search-gray.svg'
                 alt='search'
