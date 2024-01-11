@@ -27,7 +27,7 @@ async function RightSidebar() {
                 {
                     communities?.map((community, index) => (
                         <Link
-                            href={`/communities/${community.id}`}
+                            href={`/community/${community.id}`}
                         >
                             <div className="flex flex-row gap-4">
                                 <span className=" text-gray-300 pt-1 mb-1">{`#${index + 1}`}{` `}</span>

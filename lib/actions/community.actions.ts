@@ -182,6 +182,29 @@ export async function fetchTopCommunities(
   }
 }
 
+export async function fetchUserCommunities(
+  userId: string
+) {
+  try {
+    connectToDB();
+
+    const userQuery = User.find({id: userId})
+      .select("id communities onboarded")
+      .populate({
+        path: "communities",
+        model: "Community",
+        select: "id name image"
+      })
+
+    const res = await userQuery.exec();
+
+    return res[0];
+
+  } catch (error : any) {
+    console.error("fetchUserCommunities: ", error.message);
+  }
+}
+
 export async function addMemberToCommunity(
   communityId: string,
   memberId: string
