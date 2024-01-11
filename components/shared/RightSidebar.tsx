@@ -25,6 +25,16 @@ async function RightSidebar() {
             </div>
             <div className="flex flex-col gap-4 pl-2">
                 {
+                    communities?.length===0 && (
+                        <div className="flex flex-row gap-2">
+                            <span className="text-light-1">No klans found!</span>
+                            <Link href="/community/create">
+                                <span className="text-violet-400 underline">Create a klan</span>
+                            </Link>
+                        </div>
+                    )
+                }
+                {
                     communities?.map((community, index) => (
                         <Link
                             href={`/community/${community.id}`}
