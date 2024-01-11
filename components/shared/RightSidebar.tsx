@@ -46,7 +46,7 @@ async function RightSidebar() {
                                         <div className="relative h-9 w-9">
                                             <Image
                                                 alt="community image"
-                                                src={community.image}
+                                                src={community.image!}
                                                 fill
                                                 className="rounded-full"
                                             />
