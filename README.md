@@ -2,7 +2,7 @@
 
 ### https://klan.vercel.app/
 
-####This web-application is currently in development...
+### This web-application is currently in development...
 
 First, run the development server:
 
